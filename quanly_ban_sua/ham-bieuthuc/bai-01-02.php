@@ -1,6 +1,6 @@
 <?php
 include_once("config.php");
-
+ 
 // 1. Mở kết nối
 $conn = new mysqli($servername, $username, $password, $dbname);
 
