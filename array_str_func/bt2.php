@@ -28,7 +28,7 @@
         }
 
         input[type="text"] {
-             border-top: 2px solid #555;
+            border-top: 2px solid #555;
             border-left: 2px solid #555;
             width: 240px;
             height: 22px;
@@ -52,80 +52,71 @@
 
 <body>
 
-<?php
+    <?php
 
-$dayso = '';
-$tong = '';
+    function tachDaySo($dayso)
+    {
+        return explode(",", $dayso);
+    }
+    function tinhTong($mang)
+    {
+        $sum = 0;
+        for ($i = 0; $i < count($mang); $i++) {
+            if (!is_numeric($mang[$i])) {
+                return "Có phần tử chưa hợp lệ!";
+            }
+            $sum += $mang[$i];
+        }
+        return $sum;
+    }
 
-if ($_POST) {
-
-    // Kiểm tra có nhập dãy số hay không
-    if (!isset($_POST['dayso']) || trim($_POST['dayso']) == '') {
-
-        $tong = "Vui lòng nhập dãy số";
-
-    } else {
-
-        // Lấy dãy số từ form
+    $dayso = "";
+    $mang = [];
+    $tong = "";
+    if ($_POST) {
         $dayso = $_POST['dayso'];
 
-        // Tách chuỗi thành mảng
-        $mang = explode(',', $dayso);
-
-        // Đếm số phần tử
-        $n = count($mang);
-
-        // Tính tổng
-        $tong = 0;
-
-        for ($i = 0; $i < $n; $i++) {
-
-            // Kiểm tra phần tử có phải số không
-            if (!is_numeric(trim($mang[$i]))) {
-
-                $tong = "Dãy số không hợp lệ";
-                break;
-            }
-
-            $tong += (float) trim($mang[$i]);
+        if (trim($dayso) == '') {
+            $tong = "Nhập dãy chưa hợp lệ";
+        } else {
+            $mang = tachDaySo($dayso);
+            $tong = tinhTong($mang);
         }
     }
-}
+    ?>
 
-?>
+    <form action="bt2.php" method="post">
 
-<form action="bt2.php" method="post">
+        <h1>NHẬP VÀ TÍNH TRÊN DÃY SỐ</h1>
 
-    <h1>NHẬP VÀ TÍNH TRÊN DÃY SỐ</h1>
+        <label for="dayso">Nhập dãy số:</label>
 
-    <label for="dayso">Nhập dãy số:</label>
+        <input type="text"
+            name="dayso"
+            id="dayso"
+            value="<?php echo $dayso; ?>">
 
-    <input type="text"
-           name="dayso"
-           id="dayso"
-           value="<?php echo $dayso; ?>">
+        <span style="color: red;">(*)</span>
 
-    <span style="color: red;">(*)</span>
+        <br><br>
 
-    <br><br>
+        <input type="submit" value="Tổng dãy số">
 
-    <input type="submit" value="Tổng dãy số">
+        <br><br>
 
-    <br><br>
+        <label for="total">Tổng dãy số:</label>
 
-    <label for="total">Tổng dãy số:</label>
+        <input type="text"
+            name="total"
+            id="total"
+            value="<?php echo $tong; ?>"
+            readonly>
 
-    <input type="text"
-           name="total"
-           id="total"
-           value="<?php echo $tong; ?>"
-           readonly>
+        <p style="color: red; text-align: center;">
+            (*) Các số được nhập cách nhau bằng dấu phẩy (,)
+        </p>
 
-    <p style="color: red; text-align: center;">
-    (*) Các số được nhập cách nhau bằng dấu phẩy (,)
-    </p>
-
-</form>
+    </form>
 
 </body>
 
